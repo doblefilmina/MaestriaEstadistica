@@ -1,0 +1,478 @@
+---
+title: "Primer parcial Introducción al aprendizaje estadístico. Federico Brusa"
+date: "4/30/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE,echo = TRUE, results = "hide"}
+knitr::opts_chunk$set(eval=TRUE,echo=TRUE)
+library(tinytex) 
+library(MASS)
+rm(list=ls())
+setwd("C:/Users/New/Documents/documentos-maestria/IAE")
+```
+
+### Ejercicio a)
+
+```{r}
+datos_cardiacos <- read.csv("heart_L.txt", header=TRUE ,sep="\t")
+
+prob_ldl_mayor_7 <- mean(datos_cardiacos$ldl > 7)
+print(prob_ldl_mayor_7)
+
+```
+
+### Ejercicio b)
+
+```{r}
+hist(datos_cardiacos[datos_cardiacos$chd==1,]$ldl, freq=F, main="histograma para personas con enfermedad coronaria", xlab="ldl", ylab="densidad")
+
+
+```
+
+### 
+
+```{r}
+hist(datos_cardiacos[datos_cardiacos$chd==0,]$ldl, freq=F, main="histograma para personas sin enfermedad coronaria", xlab="ldl", ylab="densidad")
+
+
+```
+
+Lo que se observa es que los histogramas sugieren una asimetría a derecha en ambos casos.
+
+### Ejercicio c)
+
+```{r}
+
+empirica <- function(t,datos){
+  prob_menor_t <- mean(datos<t)
+  prob_menor_t
+}
+
+grilla <- seq(min(datos_cardiacos$ldl), max(datos_cardiacos$ldl), length.out=100)
+
+distribucion_empirica_sincdh <- rep(NA, length(grilla))
+distribucion_empirica_concdh <- rep(NA, length(grilla))
+
+for(i in 1:length(grilla)){
+  distribucion_empirica_sincdh[i] <- empirica( grilla[i], datos_cardiacos[datos_cardiacos$chd==0,]$ldl )
+  distribucion_empirica_concdh[i] <- empirica( grilla[i], datos_cardiacos[datos_cardiacos$chd==1,]$ldl )
+}
+
+plot(grilla, distribucion_empirica_sincdh, col="blue", type="p", xlab="t", ylab="probabilidad ldl<=t", main="Empírica ldl")
+points(grilla, distribucion_empirica_concdh, col="red", type="p")
+  
+
+```
+
+Juan pierde.
+
+Se eligió esa probabilidad, porque es la que surge de una jugada en que se tiran 23 dados y juan gana si la suma es menor que 50. Simplemente para remarcar que está bueno tener una función para cualquier probabilidad.
+
+Desde el punto de vista de la programación, se reemplazó la función *sample* por *runif* ya que con la primera solo puedo obtener números naturales "al azar", en cambio con la segunda se obtiene cualquier número real comprendido entre 0 y 1.
+
+Dicho esto, se simulará una jugada, pero en vez de tomar como parámetro de entrada la probabilidad de que Juan gane, se indicará la cantidad de dados y la condición para que juan gane.
+
+```{r}
+una_jugada_p <- function(d , c) {
+  dados <- sample(d : d*6 , 1)
+  if (dados <= c) {
+    gana_juan <- TRUE
+  }else {
+    gana_juan <- FALSE
+  }
+gana_juan
+}
+
+```
+
+Simulando para el mismo caso anterior (23 dados, juan gana si los 23 dados suman menos que 50:
+
+```{r}
+una_jugada_p(23, 50)
+
+```
+
+Juan pierde.
+
+Ahora bien, esta función tiene poca utilidad. Si Juan gana si sale número par, ya no se puede usar. Con ese contraejemplo se supone explicado la poca utilidad de la función anterior.
+
+Volviendo a la función **una_jugada** , se puede simplificar mucho desde el punto de vista del código:
+
+```{r}
+una_jugada_simple <- function(p){
+  gana_juan <- runif(1) <= p
+  gana_juan
+}
+```
+
+Al definir a "**gana_juan** con una expresión lógica, si la expresión se cumple, obtiene el valor TRUE, y en caso contrario el valor FALSE.
+
+La prueba:
+
+```{r}
+una_jugada_simple(0.2347)
+```
+
+Juan pierde.
+
+### Simulación 2: mil jugadas.
+
+Se simularán 1000 jugadas en las que Juan tiene probabilidad 1/6 de ganar en cada una.
+
+```{r}
+mil_jugadas <- rep(NA, 1000)
+for (i in 1:1000) {
+  mil_jugadas[i] <- una_jugada_simple(1/6)
+}
+gana_juan <- sum(mil_jugadas)
+
+print(paste("Juan gana ", gana_juan, "jugadas de 1000, es decir una proporción de ", gana_juan/1000))
+
+```
+
+En primer lugar, respecto al código, se crea un vector que tiene el resultado de cada jugada en cada posición. Es un vector con resultados lógicos TRUE y FALSE. El detalle interesante a observar es que se pueden "sumar" el contenido de ese vector. R interpreta para esta operación que TRUE = 1 y FALSE = 0. Por lo tanto la suma del vector devuelve la cantidad de veces que Juan gana.
+
+En segundo lugar, respecto a la suerte de Juan. En estas mil jugadas, Juan quedará con 616 monedas menos de con las que empezó. Ganó 192 veces, lo que significa que perdió 808. La resta da 616.
+
+### Simulación 3: mil jugadas con distintas probabilidades.
+
+A continuación, se simularán 1000 jugadas en 3 casos distintos, con probabilidades *p* de que gane juan en cada una de 0,2; 0,5 y 0,8.
+
+```{r}
+set.seed(17)
+mil_jugadas <- rep(NA, 1000)
+for (i in 1:1000) {
+  mil_jugadas[i] <- una_jugada_simple(0.2)
+}
+gana_juan_02 <- sum(mil_jugadas)
+
+
+mil_jugadas <- rep(NA, 1000)
+for (i in 1:1000) {
+  mil_jugadas[i] <- una_jugada_simple(0.5)
+}
+gana_juan_05 <- sum(mil_jugadas)
+
+mil_jugadas <- rep(NA, 1000)
+for (i in 1:1000) {
+  mil_jugadas[i] <- una_jugada_simple(0.8)
+}
+gana_juan_08 <- sum(mil_jugadas)
+
+print(paste("Con p=0.2, en una simulación de 1000 jugadas, Juan ganó una proporción de ", gana_juan_02 /1000, " veces", "Con p=0.5, en una simulación de 1000 jugadas, Juan ganó una proporción de ", gana_juan_05 /1000, " veces", "Con p=0.8, en una simulación de 1000 jugadas, Juan ganó una proporción de ", gana_juan_08 /1000, " veces" ))
+```
+
+Lo primero que cabe destacar es que con probabilidades 0.2, 0.5 y 0.8 de ganar, las proporciones de jugadas en las que Juan gana **no** son exactamente 0.2, 0.5 y 0.8 respectivamente. Esto ocurre de esta manera ya que se trata de una simulación con repetición finita de veces. A medida que se aumente el número de repeticiones, es esperable que la proporción se acerque a la probabilidad, ya que el número de repeticiones se "acerca" a infinito.
+
+Ahora bien, mirando el código, resulta molesto (como mínimo) haber repetido las mismas instrucciones para cada *p*. La forma de evitar esto es definir una función que haga lo mismo que se repite para cada *p*.
+
+```{r}
+n_jugadas_p <- function(n_rep, p){
+  gana_juan <- runif(n_rep) <= p
+  gana_juan
+}
+```
+
+La función en este caso usa la función "**runif()**" con un argumento distinto de 1. El argumento indica la cantidad de números "aleatorios" entre 0 y 1 que devuelve la función. En este caso devuelve un vector con n_rep de posiciones, con un número aleatorio entre 0 y 1 en cada una. La función devuelve un vector con los resultados de cada jugada, con TRUE si gana Juan, y FALSE en caso contrario.
+
+Adicionalmente, ahora el número de repeteciones es un parámetro de entrada, por lo que se puede utilizar de manera más general.
+
+```{r}
+set.seed(17)
+gana_juan_1000_02 <- sum(n_jugadas_p(1000, 0.2)) / 1000
+gana_juan_1000_05 <- sum(n_jugadas_p(1000, 0.5)) / 1000
+gana_juan_1000_08 <- sum(n_jugadas_p(1000, 0.8)) / 1000
+
+print(paste("Con p=0.2, en una simulación de 1000 jugadas, Juan ganó una proporción de ", gana_juan_1000_02, " veces", "Con p=0.5, en una simulación de 1000 jugadas, Juan ganó una proporción de ", gana_juan_1000_05, " veces", "Con p=0.8, en una simulación de 1000 jugadas, Juan ganó una proporción de ", gana_juan_1000_08, " veces" ))
+```
+
+Se obtiene el mismo resultado que en el otro caso, pero con el código más ordenado. Una pequeña aclaración a realizar, es que en este caso las variables "***gana_juan_xx***" es directamente la proporción. En el caso anterior era la cantidad de veces que Juan ganaba de las mil.
+
+### Simulación 4: una partida.
+
+Se simulará a continuación una partida. Ahora el número de jugadas no está fijo, se repite hasta que alguno de los jugadores pierda todas sus fichas -o muera-. Lo que se mantiene constante durante toda la partida es la probabilidad de que Juan gane cada jugada.
+
+Con este objetivo, definimos una función, bastante tendenciosa desde su denominación.
+
+Los parámetros que toma la función son: la cantidad de monedas con las que inicia Juan, la cantidad de monedas totales (es decir las de Juan y las de Casino), y la probabilidad de que Juan gane en cada jugada.
+
+```{r}
+juan_se_arruina <- function(x, y, p) {
+  j <- x
+  m <- y
+  while( j < m & j > 0 ){
+    jugada <- una_jugada_simple(p)
+    ifelse(jugada, j <- j+1 , j <- j-1)
+  }
+  ifelse(j==0, return(TRUE), return(FALSE))
+}
+```
+
+Con la función definida, se simula una partida en la que Juan empieza con 3 monedas, Casino empieza con 2 monedas (5 monedas en juego), y Juan tiene probabilidad 1/6 de ganar en cada jugada.
+
+```{r}
+juan_se_arruina(3, 5, 1/6)
+```
+
+Juan pierde la partida.
+
+### Simulación 5: mil partidas.
+
+Se simularán mil partidas como la anterior. Cabe aclarar que ahora el enfoque cambió. Hasta ahora se contaban las veces que Juan ganaba (en ese caso una jugada). Ahora se contarán las veces que Juan pierde (la partida). Y finalmente se informará la proporción de veces en las que Juan gana.
+
+```{r}
+set.seed(17)
+mil_juan_pierde <- rep(NA, 1000)
+for(i in 1:length(mil_juan_pierde) ){
+  mil_juan_pierde[i] <- juan_se_arruina(3, 5, 1/6)
+}
+
+
+suerte_juan <- 1 - sum(mil_juan_pierde)/1000
+suerte_juan
+```
+
+En una simulación de 1000 partidas, Juan gana una proporción de 0.039 veces.
+
+### Simulación 6: n partidas con parámetros variables.
+
+Viendo la simulación 5, resulta tentador definir una función que simule *n* partidas, en las que Juan inicie con *j* monedas, y haya *m* monedas en juego, y Juan tenga *p* probabilidad de ganar cada jugada.
+
+```{r}
+estimacion_juan_gana <- function(j, m, p, n) {
+  n_juan_pierde <- rep(NA, n)
+  for(i in 1:length(n_juan_pierde) ){
+    n_juan_pierde[i] <- juan_se_arruina(j, m, p)
+  }
+  proporcion_gana <- 1 - sum(n_juan_pierde)/n
+  proporcion_gana
+}
+```
+
+Se realiza una prueba de mil partidas, en las que Juan empieza con 7 monedas de 10 en juego, con probabilidad de ganar de 1/6 en cada jugada:
+
+```{r}
+set.seed(17)
+prueba <- estimacion_juan_gana(7, 10, 1/6, 1000)
+prueba
+```
+
+En esta simulación, proporción en que Juan gana, de las mil partidas, es de 0,008 veces.
+
+### Simulación 7: mil partidas, 5 monedas en juego, p fijo.
+
+Se simularán a continuación 5 casos: mil partidas, con 5 monedas en juego, y Juan teniendo 1/6 de probabilidad de ganar cada Jugada. Con esos parámetros establecidos, lo que variará será la cantidad de monedas con las que empieza Juan, desde 1 hasta 5.
+
+```{r}
+set.seed(17)
+arranque_juan <- seq(1, 5, 1)
+  juan_gana_p <- rep(NA, length(arranque_juan))
+
+  for(i in 1:length(arranque_juan)){ 
+    juan_gana_p[i] <- estimacion_juan_gana(arranque_juan[i], 5, 1/6, 1000)
+  }
+  juan_gana_p
+```
+
+En cada posición del vector "**juan_gana_p**" está guardada la proporción de veces en que Juan gana la partida, empezando con 1, 2, 3 , 4, 5 monedas respectivamente. El resultado es el esperado: Juan gana máyor cantidad de veces a medida que aumenta la cantidad de monedas con las que empieza el juego.
+
+En el caso de la última posición, es la proporción de veces que Juan gana cuando comienza el juego con 5 monedas, cuando la cantidad de monedas en juego es 5. El valor se interpreta como que Juan gana la totalidad de las partidas, pero lo que verdaderamente está pasando es que al iniciar el juego, Juan ya tiene la totalidad de las monedas en juego, por lo tanto el Juego nunca empieza, Juan ya empieza ganando.
+
+Esto es coherente plantearlo de esa manera, ya que si estamos simulando una situación real, una persona (casi) nunca empezaría un juego en el que solo puede empatar o perder. Si empieza con 5 monedas, los resultados posibles son: que al final del juego termine con 5 monedas, que al final del juego termine con 0 monedas. En ningún caso termina con más monedas que al inicio del juego.
+
+### Simulación 8: gráfico de la simulación 7.
+
+El bloque de código de la simulación 7 es un caso particular de lo que puede ser una función. Por lo tanto la definimos:
+
+```{r}
+simulaciones <- function(m, p, n_rep){ 
+  arranque_juan <- seq(1, m, 1)
+  juan_gana_p <- rep(NA, length(arranque_juan))
+
+  for(i in 1:length(arranque_juan)){ 
+    juan_gana_p[i] <- estimacion_juan_gana(arranque_juan[i], m, p, n_rep)
+  }
+  juan_gana_p
+}
+```
+
+Y para obtener el mismo vector que en el caso anterior:
+
+```{r}
+set.seed(17)
+juan_gana_1_6_1000 <- simulaciones(5, 1/6, 1000)
+juan_gana_1_6_1000
+```
+
+Y para probabilidades de ganar en cada jugada de 0,5 y 0,8
+
+```{r}
+set.seed(17)
+juan_gana_05_1000 <- simulaciones(5, 0.5, 1000)
+juan_gana_05_1000
+```
+
+```{r}
+set.seed(17)
+juan_gana_08_1000 <- simulaciones(5, 0.8, 1000)
+juan_gana_08_1000
+```
+
+Se ve cómo la proporción de partidas ganadas además de aumentar con la cantidad de monedas con las que Juan empieza el juego, también aumenta con la probabilidad de que Juan gane cada jugada.
+
+Se muestra un gráfico en donde se aprecian mejor los resultados obtenidos.
+
+```{r}
+plot(seq(1, 5, 1), juan_gana_1_6_1000, type = "p", xlab="Monedas inicia Juan", ylab="proporción gana Juan", main="Gana Juan con p variable, m fija")
+points(seq(1, 5, 1), juan_gana_05_1000, type = "p", col="blue")
+points(seq(1, 5, 1), juan_gana_08_1000, type = "p", col="green")
+legend(x="bottomright", legend=c("1/6", "0.5", "0.8"), fill=c("black", "blue", "green"), title="prob")
+```
+
+### Simulación 9: 1000 partidas, con p fijo, y cantidad de monedas variable.
+
+Se simularán situaciones en que la cantidad de monedas en juego va variando, para analizar los resultados.
+
+```{r}
+set.seed(17)
+m <- c(10, 20, 30, 50)
+juan_gana_05_10 <- simulaciones(10, 0.5, 1000)
+juan_gana_05_10
+```
+
+```{r}
+juan_gana_05_20 <- simulaciones(20, 0.5, 1000)
+juan_gana_05_20
+```
+
+```{r}
+juan_gana_05_30 <- simulaciones(30, 0.5, 1000)
+juan_gana_05_30
+```
+
+```{r}
+juan_gana_05_50 <- simulaciones(50, 0.5, 1000)
+juan_gana_05_50
+```
+
+```{r}
+plot(seq(1, 10, 1), juan_gana_05_10, xlim=c(1,50), type = "p", xlab="Monedas inicia Juan", ylab="proporción gana Juan", main="Gana Juan para p=0.5 y m variable")
+points(seq(1, 20, 1), juan_gana_05_20, type = "p", col="blue")
+points(seq(1, 30, 1), juan_gana_05_30, type = "p", col="green")
+points(seq(1, 50, 1), juan_gana_05_50, type = "p", col="red")
+legend(x="bottomright", legend=c("10", "20", "30", "50"), fill=c("black", "blue", "green", "red"), title="m en juego")
+```
+
+Se ve cómo a medida que Juan aumenta la cantidad de monedas con la que arranca la partida, la proporción de partidas que gana es mayor. Para cualquier cantidad de monedas en juego se repite el comportamiento.
+
+### Simulación 10. estimación del comportamiento anterior.
+
+En este caso, nos referiremos a la simulación 9. Se intentará buscar la fórmula que representa la simulación realizada.
+
+En primer lugar, se observa una 4 gráficos de rectas. Por lo tanto, lo que se hace es buscar los parámetros que determinan esas rectas.
+
+Para cualquier recta tenemos:
+
+$y=ax +b$
+
+En particular, para las rectas de la simulación 9, todas pasa aproximadamente por el punto $P_1=(0,0)$. Es decir que su ordenada al origen es 0. Por lo tanto:
+
+$b=0$
+
+$y=ax$
+
+El otro punto por donde pasan todas las rectas es el de ordenada igual a 1. En cada recta se ve que alcanza ese valor cuando x vale m. Por lo tanto podemos decir que todas las rectas pasan por el punto $P_2=(m,1)$ . Así:
+
+$a=1-0/m-0=1/m$
+
+$y=x/m$
+
+Donde m= cantidad de monedas en juego.
+
+### Simulación 11. 1000 partidas, con m y p variables
+
+Se simulará a continuación casos con distintas combinaciones. *p* con valores de 1/6, 1/2, 4/5 y valores de m como en el caso anterior, 10, 20, 30, 50.
+
+```{r}
+set.seed(17)
+juan_gana_1_6_10 <- simulaciones(10, 1/6, 1000)
+juan_gana_1_6_20 <- simulaciones(20, 1/6, 1000)
+juan_gana_1_6_30 <- simulaciones(30, 1/6, 1000)
+juan_gana_1_6_50 <- simulaciones(50, 1/6, 1000)
+
+juan_gana_1_2_10 <- simulaciones(10, 1/2, 1000)
+juan_gana_1_2_20 <- simulaciones(20, 1/2, 1000)
+juan_gana_1_2_30 <- simulaciones(30, 1/2, 1000)
+juan_gana_1_2_50 <- simulaciones(50, 1/2, 1000)
+
+juan_gana_4_5_10 <- simulaciones(10, 4/5, 1000)
+juan_gana_4_5_20 <- simulaciones(20, 4/5, 1000)
+juan_gana_4_5_30 <- simulaciones(30, 4/5, 1000)
+juan_gana_4_5_50 <- simulaciones(50, 4/5, 1000)
+
+plot(seq(1, 10, 1), juan_gana_1_6_10, xlim=c(1,50), type = "p",pch=1, main="Gana Juan para p y m variables", xlab="Monedas inicia Juan", ylab="proporción gana Juan")
+points(seq(1, 20, 1), juan_gana_1_6_20, type = "p", col="black", pch=8)
+points(seq(1, 30, 1), juan_gana_1_6_30, type = "p", col="black", pch= 12)
+points(seq(1, 50, 1), juan_gana_1_6_50, type = "p", col="black", pch=24)
+
+points(seq(1, 10, 1), juan_gana_1_2_10, type = "p", col="blue", pch=1)
+points(seq(1, 20, 1), juan_gana_1_2_20, type = "p", col="blue", pch=8)
+points(seq(1, 30, 1), juan_gana_1_2_30, type = "p", col="blue", pch=12)
+points(seq(1, 50, 1), juan_gana_1_2_50, type = "p", col="blue", pch=24)
+
+points(seq(1, 10, 1), juan_gana_4_5_10, type = "p", col="green", pch=1)
+points(seq(1, 20, 1), juan_gana_4_5_20, type = "p", col="green", pch=8)
+points(seq(1, 30, 1), juan_gana_4_5_30, type = "p", col="green", pch=12)
+points(seq(1, 50, 1), juan_gana_4_5_50, type = "p", col="green", pch=24)
+
+legend(x="bottomright", legend=c("1/6", "1/2", "4/5"), fill=c("black", "blue", "green"), title="p", inset=c(0.2, 0.1))
+legend(x="bottomright", legend=c("10", "20", "30", "50"), pch=c(1, 8, 12, 24), title="m", inset=c(0.07, 0.1))
+```
+
+Resulta muy interesante ver el gráfico.
+
+En primer lugar lo que se observa es que, para un m determinado, al variar p varía el tipo de gráfico. con *p* igual a 0,5 anteriormente se encontró una función de la recta que aproxima bien. Pero en este gráfico se observa que con *p* debajo de 0,5 la variación de la proporción de veces que gana Juan parece que se puede aproximar bien con una función de tipo exponencial, y con *p* por encima de 0,5, parece que se puede aproximar con una función de tipo logarítmica.
+
+Por otro lado, para p fijo menor a 0,5, la variación de m lo que hace es determinar el lugar donde el gráfico se despega del eje x (es decir de valores cercanos a 0).
+
+La interpretación que se puede hacer es: si Juan tiene en cada jugada más probabilidades de perder que de ganar (probabilidad de ganar menor a 0,5), necesita mucha ventaja inicial de monedas para poder pensar que puede ganar. Si no empieza con una cantidad de monedas cercana a la cantidad total en juego, de acuerdo a las simulaciones realizadas, lo más probable es que pierda la partida.
+
+Para *p* igual a 0,5, la variación de proporcionalidad de veces que Juan gana, varía aproximadamente linealmente con la cantidad de monedas con las que arranca Juan (para cada m).
+
+Para *p* mayor a 0,5 la interpretación es la inversa a la realizada para *p* menor a 0,5. Lo que se observa es que rápidamente el gráfico se va a valores cercanos a 1. Es decir que aún empezando con muy pocas monedas, Juan tiene muchas posibilidades de ganar la partida.
+
+Todo el análisis anterior fue realizando suponiendo que ni Juan ni Casino mueren en alguna partida.
+
+### Simulación 12: 1 jugada de 11 simulaciones.
+
+Habiendo realizado las 11 simulaciones pedidas para completar el informe de la Ruina del Jugador, con sus correspondientes análisis.
+
+Habiendo tenido en cuenta la posibilidad de que alguno de los dos jugadores muera, y habiéndola dejado de lado por improbable.
+
+Habiendo realizado el análisis correspondiente a cada simulación.
+
+Se resuelve:
+
+Simular resultado de las 11 simulaciones anteriores. Para ello se define una función:
+
+```{r}
+entra_a_la_carrera <- function(s, n){
+  ifelse(s==n, return(TRUE), return(FALSE))
+}
+
+```
+
+Con *s* cantidad de simulaciones realizadas, con *n* cantidad de simulaciones a realizar, se simula:
+
+```{r}
+federico_entra <- entra_a_la_carrera(11, 11)
+federico_entra
+```
+
+Conclusión:
+
+Juan se arruina. Federico festeja!
