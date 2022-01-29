@@ -1,0 +1,486 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{amssymb}
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Trabajo Práctico Probabilidades},
+  pdfauthor={Federico Brusa - Javier Garcia Skabar},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Trabajo Práctico Probabilidades}
+\author{Federico Brusa - Javier Garcia Skabar}
+\date{5/09/2021}
+
+\begin{document}
+\maketitle
+
+\hypertarget{ejercicio-1}{%
+\subsubsection{Ejercicio 1)}\label{ejercicio-1}}
+
+En una urna hay 4 bolas verdes, 3 amarillas y 3 rojas. Se extraen tres
+bolas al azar sin reposición. Sean X la cantidad de bolas verdes e Y la
+cantidad de bolas rojas extraídas.
+
+\hypertarget{inciso-a}{%
+\subparagraph{Inciso a)}\label{inciso-a}}
+
+Simular 1000 realizaciones del experimento que consiste en extraer 3
+bolas y observar el color, guardando el resultado de la cantidad de
+verdes en el vector x, y la cantidad de rojas en el vector y.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{urna }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"V"}\NormalTok{,}\StringTok{"V"}\NormalTok{,}\StringTok{"V"}\NormalTok{,}\StringTok{"V"}\NormalTok{,}\StringTok{"A"}\NormalTok{,}\StringTok{"A"}\NormalTok{,}\StringTok{"A"}\NormalTok{,}\StringTok{"R"}\NormalTok{,}\StringTok{"R"}\NormalTok{,}\StringTok{"R"}\NormalTok{)}
+\NormalTok{resultados }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{ensayo =} \FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1000}\NormalTok{),}
+                         \AttributeTok{X=}\FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\DecValTok{1000}\NormalTok{),}
+                         \AttributeTok{Y=}\FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\DecValTok{1000}\NormalTok{))}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{17}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(resultados))\{}
+\NormalTok{  ensayo\_i }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\DecValTok{3}\NormalTok{, }\AttributeTok{replace=}\NormalTok{F)}
+\NormalTok{  bolas }\OtherTok{\textless{}{-}}\NormalTok{ urna[ensayo\_i]}
+\NormalTok{  resultados}\SpecialCharTok{$}\NormalTok{X[i] }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(bolas}\SpecialCharTok{==}\StringTok{"V"}\NormalTok{)}
+\NormalTok{  resultados}\SpecialCharTok{$}\NormalTok{Y[i] }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(bolas}\SpecialCharTok{==}\StringTok{"R"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{inciso-b}{%
+\subparagraph{Inciso b)}\label{inciso-b}}
+
+Realizar un gráfico de puntos de x vs.~y. Qué se observa en este
+gráfico?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(resultados}\SpecialCharTok{$}\NormalTok{X, resultados}\SpecialCharTok{$}\NormalTok{Y, }\AttributeTok{xlab=}\StringTok{"X cantidad verdes"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Y cantidad rojas"}\NormalTok{, }\AttributeTok{xaxt=}\StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt=}\StringTok{"n"}\NormalTok{, }\AttributeTok{type=}\StringTok{"p"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{at =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{), }\AttributeTok{cex.axis=}\DecValTok{1}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\DecValTok{2}\NormalTok{, }\AttributeTok{at =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{), }\AttributeTok{cex.axis=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+Lo que se observa en el gráfico es que en 1000 repeticiones del ensayo,
+se obtienen todos los resultados posibles (todos los del soporte)
+
+\hypertarget{inciso-c}{%
+\subparagraph{Inciso c)}\label{inciso-c}}
+
+Hallar la tabla conjunta de frecuencias relativas para cada par (x; y).
+Interpretar.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{4}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3}\NormalTok{), }\FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{), }\FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DecValTok{0}\NormalTok{)}
+\NormalTok{frecuencia }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\FunctionTok{length}\NormalTok{(x))}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(x))\{}
+\NormalTok{frecuencia[i] }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(resultados[resultados}\SpecialCharTok{$}\NormalTok{X}\SpecialCharTok{==}\NormalTok{x[i] }\SpecialCharTok{\&}\NormalTok{ resultados}\SpecialCharTok{$}\NormalTok{Y}\SpecialCharTok{==}\NormalTok{y[i] , ])}
+
+\NormalTok{\}}
+\NormalTok{resultado }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{paste}\NormalTok{(x,}\StringTok{"V"}\NormalTok{, }\AttributeTok{sep=}\StringTok{""}\NormalTok{), }\FunctionTok{paste}\NormalTok{(y,}\StringTok{"R"}\NormalTok{, }\AttributeTok{sep=}\StringTok{""}\NormalTok{), }\AttributeTok{sep=}\StringTok{"{-}"}\NormalTok{)}
+
+\NormalTok{tabla\_frecuencias }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(x, y, resultado, frecuencia)}
+
+\NormalTok{tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{resultado }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{resultado)}
+\FunctionTok{print}\NormalTok{(tabla\_frecuencias)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    x y resultado frecuencia
+## 1  0 0     0V-0R         11
+## 2  0 1     0V-1R         65
+## 3  0 2     0V-2R         83
+## 4  0 3     0V-3R          7
+## 5  1 0     1V-0R        109
+## 6  1 1     1V-1R        305
+## 7  1 2     1V-2R         90
+## 8  2 0     2V-0R        147
+## 9  2 1     2V-1R        149
+## 10 3 0     3V-0R         34
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{resultado, tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{frecuencia, }\AttributeTok{xlab=}\StringTok{"resultado"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"frecuencia"}\NormalTok{, }\AttributeTok{cex.lab=}\FloatTok{0.01}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+Lo que se observa en la tabla de frecuencias (y en el gráfico) es que el
+resultado más frecuente es extraer 1 bolilla verde y una roja entre las
+3 bolillas extraídas.
+
+Para hacer una mejor interpretación se calcularán las probabilidades de
+obtener cada resultado posible, y luego se multiplicará por las
+repeticiones (1000) para obtener una frecuencia teórica de resultados.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{combinatorio }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n,r)\{}
+  \ControlFlowTok{if}\NormalTok{ (r}\SpecialCharTok{==}\DecValTok{0}\NormalTok{)\{}
+\NormalTok{    resultado }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{      resultado }\OtherTok{\textless{}{-}} \FunctionTok{factorial}\NormalTok{(n) }\SpecialCharTok{/}\NormalTok{ ( }\FunctionTok{factorial}\NormalTok{(n}\SpecialCharTok{{-}}\NormalTok{r)}\SpecialCharTok{*}\FunctionTok{factorial}\NormalTok{(r) )  }
+\NormalTok{  \}}
+\NormalTok{  resultado}
+\NormalTok{\}}
+
+
+\NormalTok{pxy }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{)\{}
+\NormalTok{  pxy[i] }\OtherTok{\textless{}{-}} \FunctionTok{combinatorio}\NormalTok{(}\DecValTok{4}\NormalTok{, tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{x[i]) }\SpecialCharTok{*} \FunctionTok{combinatorio}\NormalTok{(}\DecValTok{3}\NormalTok{, tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{y[i]) }\SpecialCharTok{*} \FunctionTok{combinatorio}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{3}\SpecialCharTok{{-}}\NormalTok{tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{x[i]}\SpecialCharTok{{-}}\NormalTok{tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{y[i]) }\SpecialCharTok{/} \FunctionTok{combinatorio}\NormalTok{(}\DecValTok{10}\NormalTok{,}\DecValTok{3}\NormalTok{)  }
+\NormalTok{\}}
+
+\NormalTok{fxy\_teorica }\OtherTok{\textless{}{-}} \DecValTok{1000}\SpecialCharTok{*}\NormalTok{pxy}
+\FunctionTok{plot}\NormalTok{(tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{resultado, tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{frecuencia, }\AttributeTok{xlab=}\StringTok{"resultado"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"frecuencia"}\NormalTok{, }\AttributeTok{cex.lab=}\FloatTok{0.01}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(tabla\_frecuencias}\SpecialCharTok{$}\NormalTok{resultado, fxy\_teorica, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Se observa que los resutados de la simulación y los resultados
+``teóricos'' se acercan mucho.
+
+\hypertarget{inciso-d}{%
+\subparagraph{Inciso d)}\label{inciso-d}}
+
+Para cada valor observado x, calcular el promedio de los valores de y
+correspondientes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rango\_x }\OtherTok{\textless{}{-}}\NormalTok{ (}\DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{)}
+\NormalTok{promedio\_y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{mean}\NormalTok{(resultados[resultados}\SpecialCharTok{$}\NormalTok{X}\SpecialCharTok{==}\DecValTok{0}\NormalTok{ ,]}\SpecialCharTok{$}\NormalTok{Y) , }\FunctionTok{mean}\NormalTok{(resultados[resultados}\SpecialCharTok{$}\NormalTok{X}\SpecialCharTok{==}\DecValTok{1}\NormalTok{ ,]}\SpecialCharTok{$}\NormalTok{Y) , }\FunctionTok{mean}\NormalTok{(resultados[resultados}\SpecialCharTok{$}\NormalTok{X}\SpecialCharTok{==}\DecValTok{2}\NormalTok{ ,]}\SpecialCharTok{$}\NormalTok{Y) , }\FunctionTok{mean}\NormalTok{(resultados[resultados}\SpecialCharTok{$}\NormalTok{X}\SpecialCharTok{==}\DecValTok{3}\NormalTok{ ,]}\SpecialCharTok{$}\NormalTok{Y))}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(rango\_x, promedio\_y))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      rango_x promedio_y
+## [1,]       0  1.5180723
+## [2,]       1  0.9623016
+## [3,]       2  0.5033784
+## [4,]       3  0.0000000
+\end{verbatim}
+
+\hypertarget{inciso-e}{%
+\subparagraph{Inciso e)}\label{inciso-e}}
+
+Graficar los promedios de y en función de los valores observados x,
+sobre el gráfico obtenido en el punto b.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(resultados}\SpecialCharTok{$}\NormalTok{X, resultados}\SpecialCharTok{$}\NormalTok{Y, }\AttributeTok{xlab=}\StringTok{"X cantidad verdes"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Y cantidad rojas"}\NormalTok{, }\AttributeTok{xaxt=}\StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt=}\StringTok{"n"}\NormalTok{, }\AttributeTok{type=}\StringTok{"p"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{at =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{), }\AttributeTok{cex.axis=}\DecValTok{1}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\DecValTok{2}\NormalTok{, }\AttributeTok{at =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{), }\AttributeTok{cex.axis=}\DecValTok{1}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(rango\_x, promedio\_y, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{inciso-f}{%
+\subparagraph{Inciso f)}\label{inciso-f}}
+
+Superponer en el gráfico anterior la función de regresión \(\phi(x)\) =
+E{[}Y\textbar X = x{]}. Concluir a partir de lo observado.
+
+La función de probabilidad conjunta se obtiene por conteo de casos
+favorables sobre casos totales:
+
+\(P_{XY}(x,y)= \frac{C_{3,y}.C_{4,x}.C_{3,3-x-y}}{C_{10,3}}\)
+
+Cada una de las marginales tiene distribusión hipergeométrica, por lo
+que:
+
+\(P_{X}(x)= \frac{C_{4,x}.C_{6,3-x}}{C_{10,3}}\)
+
+\(P_{Y}(y)= \frac{C_{3,y}.C_{7,3-y}}{C_{10,3}}\)
+
+Por lo tanto, se obtiene la condicional:
+
+\(P_{Y|X}(y)= \frac{P_{XY}(x,y)}{P_{X}(x)}\)
+
+\(P_{Y|X}(y)= \frac{C_{3,y}.C_{3,3-y-x}}{C_{6,3-x}}\)
+
+Y a partir de la función de probabilidad conjunta, se obtiene la función
+de regresión. Para cada X del soporte:
+
+\(E_{[Y|X=x]}=\phi(x)= \Sigma y.P_{Y|X}(y)\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PYdadoX }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{X=}\FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\DecValTok{10}\NormalTok{), }\AttributeTok{Y=}\FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\DecValTok{10}\NormalTok{), }\AttributeTok{P\_YdadoX=}\FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{,}\DecValTok{10}\NormalTok{))}
+\NormalTok{contador }\OtherTok{\textless{}{-}} \DecValTok{1}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{)\{}
+  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\NormalTok{(}\DecValTok{3}\SpecialCharTok{{-}}\NormalTok{i))\{}
+\NormalTok{    PYdadoX}\SpecialCharTok{$}\NormalTok{X[contador] }\OtherTok{\textless{}{-}}\NormalTok{ i}
+\NormalTok{    PYdadoX}\SpecialCharTok{$}\NormalTok{Y[contador] }\OtherTok{\textless{}{-}}\NormalTok{ j}
+\NormalTok{    PYdadoX}\SpecialCharTok{$}\NormalTok{P\_YdadoX[contador] }\OtherTok{\textless{}{-}} \FunctionTok{combinatorio}\NormalTok{(}\DecValTok{3}\NormalTok{, j)}\SpecialCharTok{*}\FunctionTok{combinatorio}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{3}\SpecialCharTok{{-}}\NormalTok{i}\SpecialCharTok{{-}}\NormalTok{j) }\SpecialCharTok{/} \FunctionTok{combinatorio}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{3}\SpecialCharTok{{-}}\NormalTok{i)}
+\NormalTok{    contador }\OtherTok{\textless{}{-}}\NormalTok{ contador}\SpecialCharTok{+}\DecValTok{1}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{EYdadoX }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{X=}\FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{3}\NormalTok{) , }\AttributeTok{E\_YdadoX=}\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{4}\NormalTok{))}
+\NormalTok{contador }\OtherTok{\textless{}{-}} \DecValTok{1}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:} \DecValTok{3}\NormalTok{ )\{}
+  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\NormalTok{(}\DecValTok{3}\SpecialCharTok{{-}}\NormalTok{i))\{}
+\NormalTok{    EYdadoX}\SpecialCharTok{$}\NormalTok{E\_YdadoX[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ EYdadoX}\SpecialCharTok{$}\NormalTok{E\_YdadoX[i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ j}\SpecialCharTok{*}\NormalTok{PYdadoX}\SpecialCharTok{$}\NormalTok{P\_YdadoX[contador]}
+\NormalTok{    contador }\OtherTok{\textless{}{-}}\NormalTok{ contador}\SpecialCharTok{+}\DecValTok{1}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\FunctionTok{plot}\NormalTok{(resultados}\SpecialCharTok{$}\NormalTok{X, resultados}\SpecialCharTok{$}\NormalTok{Y, }\AttributeTok{xlab=}\StringTok{"X cantidad verdes"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Y cantidad rojas"}\NormalTok{, }\AttributeTok{xaxt=}\StringTok{"n"}\NormalTok{, }\AttributeTok{yaxt=}\StringTok{"n"}\NormalTok{, }\AttributeTok{type=}\StringTok{"p"}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{at =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{), }\AttributeTok{cex.axis=}\DecValTok{1}\NormalTok{)}
+\FunctionTok{axis}\NormalTok{(}\DecValTok{2}\NormalTok{, }\AttributeTok{at =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{3}\NormalTok{), }\AttributeTok{cex.axis=}\DecValTok{1}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(rango\_x, promedio\_y, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(EYdadoX}\SpecialCharTok{$}\NormalTok{X, EYdadoX}\SpecialCharTok{$}\NormalTok{E\_YdadoX, }\AttributeTok{col=}\StringTok{"green"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+Se observa que los puntos obtenidos con la función de regresión
+coinciden casi exactamente con los promedios de Y de la simulación.
+
+\hypertarget{ejercicio-2}{%
+\subsubsection{Ejercicio 2)}\label{ejercicio-2}}
+
+Realizar 1000 simulaciones del vector aleatorio (X; Y ), cuya densidad
+conjunta es de la forma:
+
+\(f_{XY}(x,y)= \frac{1}{2x+1} e^{-2x-\frac{y}{4x+2}}.I(x>0, y>0)\)
+
+\hypertarget{inciso-a-1}{%
+\subparagraph{Inciso a)}\label{inciso-a-1}}
+
+Gracar x vs.~y.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{17}\NormalTok{)}
+\NormalTok{repeticion }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1000}\NormalTok{)}
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{rexp}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\AttributeTok{rate=}\DecValTok{2}\NormalTok{)}
+\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\FunctionTok{length}\NormalTok{(X))}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(Y))\{}
+\NormalTok{  Y[i] }\OtherTok{\textless{}{-}} \FunctionTok{rexp}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{rate=} \DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{4}\SpecialCharTok{*}\NormalTok{X[i]}\SpecialCharTok{+}\DecValTok{2}\NormalTok{) )}
+\NormalTok{\}}
+
+\FunctionTok{plot}\NormalTok{(X,Y)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+A partir de la función de distribución conjunta, obtenemos la función de
+distribución marginal
+
+\(f_{XY}(x,y)= \frac{1}{2x+1} e^{-2x-\frac{y}{4x+2}}\)
+
+\(f_{X}(x)= 2e^{-2x}\)
+
+Que resulta una exponencial de parámetro:
+
+\(\lambda= 2\)
+
+Luego:
+
+\(f_{Y|X}(y) = \frac{1}{4x+2}e^{-\frac{y}{4x+2}}\)
+
+Que resulta una exponencial de parámetro:
+
+\(\lambda= \frac{1}{4x+2}\)
+
+Para hacer la simulación, se simuló X con la distribución dada. Luego
+para cada X obtenido en la simulación, se simuló Y dado X.
+
+\hypertarget{inciso-b-1}{%
+\subparagraph{Inciso b)}\label{inciso-b-1}}
+
+Para cada valor observado x, tomar una ventana de (x-h; x+h), y calcular
+el promedio de los valores de Y para todas las observaciones que caen
+dentro de dicho intervalo. Elegir el valor de h que crea adecuado.
+Justicar.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{XY }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(X,Y)}
+\NormalTok{h }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\DecValTok{2}\NormalTok{ , }\FloatTok{0.01}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(h))\{}
+\NormalTok{  Y\_promedio }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(XY))}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(XY))\{}
+    \ControlFlowTok{if}\NormalTok{( }\FunctionTok{nrow}\NormalTok{( XY[}\FunctionTok{abs}\NormalTok{(XY}\SpecialCharTok{$}\NormalTok{X[i] }\SpecialCharTok{{-}}\NormalTok{ XY}\SpecialCharTok{$}\NormalTok{X)}\SpecialCharTok{\textless{}}\NormalTok{h[j] ,]) }\SpecialCharTok{\textgreater{}}\DecValTok{1}\NormalTok{ )\{}
+      \DocumentationTok{\#\#vector con el promedio de los valores cercanos, sin usar el Y en el punto}
+\NormalTok{      Y\_promedio[i] }\OtherTok{\textless{}{-}}\NormalTok{  ( }\FunctionTok{sum}\NormalTok{( XY[ }\FunctionTok{abs}\NormalTok{(XY}\SpecialCharTok{$}\NormalTok{X[i] }\SpecialCharTok{{-}}\NormalTok{ XY}\SpecialCharTok{$}\NormalTok{X)}\SpecialCharTok{\textless{}}\NormalTok{h[j] ,]}\SpecialCharTok{$}\NormalTok{Y) }\SpecialCharTok{{-}}\NormalTok{ XY}\SpecialCharTok{$}\NormalTok{Y[i] ) }\SpecialCharTok{/}\NormalTok{ (}\FunctionTok{nrow}\NormalTok{( XY[}\FunctionTok{abs}\NormalTok{(XY}\SpecialCharTok{$}\NormalTok{X[i] }\SpecialCharTok{{-}}\NormalTok{ XY}\SpecialCharTok{$}\NormalTok{X)}\SpecialCharTok{\textless{}}\NormalTok{h[j] ,])}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)  }
+\NormalTok{    \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{      Y\_promedio[i] }\OtherTok{\textless{}{-}}\NormalTok{ XY}\SpecialCharTok{$}\NormalTok{Y[i]}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{  XY }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(XY, Y\_promedio)}
+\NormalTok{\}}
+\DocumentationTok{\#\#Error cuadrático medio por convalidación cruzada}
+\NormalTok{ECM\_CV }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\FunctionTok{length}\NormalTok{(h))}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(h))\{}
+\NormalTok{  ECM\_CV[i] }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{((XY}\SpecialCharTok{$}\NormalTok{Y}\SpecialCharTok{{-}}\NormalTok{XY[,i}\SpecialCharTok{+}\DecValTok{2}\NormalTok{])}\SpecialCharTok{**}\DecValTok{2}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{h\_opt }\OtherTok{\textless{}{-}}\NormalTok{ h[}\FunctionTok{which}\NormalTok{(ECM\_CV}\SpecialCharTok{==}\FunctionTok{min}\NormalTok{(ECM\_CV[}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{]))]}
+\FunctionTok{plot}\NormalTok{(h, ECM\_CV)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+Para obtener la ventanan óptima se calculó el erros cuadrático medio
+para distintas h usando el método de convalidación cruzada. En cada X se
+obtuvo el promedio de los Y incluídos en la ventana h, dejando afuera el
+Y correspondiente al X del centro de la ventana (método ``Leave one
+out'').
+
+Si bien del gráfico se desprende que con los valores más chicos de h
+podría alcanzarse el mínimo, se decidió dejar afuera del análisis los h
+tan chicos por riesgo de ``over-fitting'', resultando el h óptimo = 0,22
+
+\hypertarget{inciso-c-1}{%
+\subparagraph{Inciso c)}\label{inciso-c-1}}
+
+Graficar los promedios de y en función de los valores observados x,
+sobre el gráfico obtenido en el punto a.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Y\_promedio\_optimo }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\FunctionTok{length}\NormalTok{(Y))}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(Y))\{}
+\NormalTok{  Y\_promedio\_optimo[i] }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{( XY[ }\FunctionTok{abs}\NormalTok{(XY}\SpecialCharTok{$}\NormalTok{X[i] }\SpecialCharTok{{-}}\NormalTok{ XY}\SpecialCharTok{$}\NormalTok{X)}\SpecialCharTok{\textless{}}\NormalTok{h\_opt ,]}\SpecialCharTok{$}\NormalTok{Y)}
+\NormalTok{\}}
+
+\FunctionTok{plot}\NormalTok{(X,Y)}
+\FunctionTok{points}\NormalTok{(X, Y\_promedio\_optimo, }\AttributeTok{col=}\StringTok{"green"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\hypertarget{inciso-d-1}{%
+\subparagraph{Inciso d)}\label{inciso-d-1}}
+
+Superponer en el gráfico anterior la función de regresión \(\phi(x)\) =
+E{[}Y\textbar X = x{]}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{E\_YdadoX }\OtherTok{\textless{}{-}} \DecValTok{4}\SpecialCharTok{*}\NormalTok{X}\SpecialCharTok{+}\DecValTok{2}
+
+\FunctionTok{plot}\NormalTok{(X,Y)}
+\FunctionTok{points}\NormalTok{(X, Y\_promedio\_optimo, }\AttributeTok{col=}\StringTok{"green"}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(X, E\_YdadoX, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{, }\AttributeTok{type=}\StringTok{"l"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{trabajo-practico_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\end{document}
